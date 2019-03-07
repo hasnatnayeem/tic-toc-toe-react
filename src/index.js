@@ -24,8 +24,9 @@ class Board extends React.Component {
     }
 
     handleClick(i) {
-        this.state.squares[i] = 'X';
-        this.setState(this.state); // Forcing re-rendering
+        const squares = this.state.squares;
+        squares[i] = 'X';
+        this.setState({squares: squares});
         console.log(this.state.squares);
     }
 

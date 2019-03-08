@@ -54,3 +54,6 @@ body {
     font-weight: bold;
   }
   
+  .winning-square {
+    background: red;
+  }

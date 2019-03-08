@@ -11,9 +11,21 @@ function Square(props) {
 }
 
 class Board extends React.Component {
+    createBoard() {
+        let rows = [];
+        for (let i = 0; i < 9; i += 3) {
+            let childrens = [];
+            for (let j = 0; j < 3; j++) {
+                childrens.push(this.renderSquare(i + j));
+            }
+            rows.push(<div key={i} className="board-row">{childrens}</div>);
+        }
+        return rows;
+    }
+
     renderSquare(i) {
         return (
-            <Square 
+            <Square key={i}
                 value={this.props.squares[i]} 
                 onClick={() => this.props.onClick(i)}
             />
@@ -23,21 +35,7 @@ class Board extends React.Component {
     render() {
         return (
             <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+                {this.createBoard()}
             </div>
         );
     }
@@ -95,9 +93,6 @@ class Game extends React.Component {
             const description = move ?
                 'Go to move ' + move + ' (' + history[move].location.row + ', ' + history[move].location.col + ')':
                 'Go to game start';
-            if (move === this.state.stepNumber) {
-                console.log(move + 1);
-            }
             return (
                 <li key={move}>
                     <button className={move === this.state.stepNumber ? 'bold-button' : null} onClick={() => this.jumpTo(move)}>

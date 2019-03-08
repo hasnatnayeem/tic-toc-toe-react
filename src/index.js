@@ -26,7 +26,6 @@ class Board extends React.Component {
     }
 
     renderSquare(i, winning=false) {
-        // console.log(i, winning);
         return (
             <Square key={i}
                 className={winning ? 'square winning-square' : 'square'}
@@ -76,8 +75,8 @@ class Game extends React.Component {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
-        const winner = calculateWinner(squares);
-        if (winner || squares[i]) {
+        const result = calculateWinner(squares);
+        if (result || squares[i] || !squares.includes(null)) {
             return;
         }
         squares[i] = this.state.xIsNext ? 'X' : 'O';
@@ -100,7 +99,7 @@ class Game extends React.Component {
     render() {
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+        const result = calculateWinner(current.squares);
 
         const moves = history.map((step, move) => {
             const description = move && history[move].location ?
@@ -117,9 +116,12 @@ class Game extends React.Component {
 
         let status;
         let winningSquares = [];
-        if (winner) {
-            status = 'Winner: ' + winner.symbol;
-            winningSquares = winner.winningSquares;
+        if (result && result.symbol) {
+            status = 'Winner: ' + result.symbol;
+            winningSquares = result.winningSquares;
+        }
+        else if(this.state.stepNumber === 9) {
+            status = 'Match tied';
         }
         else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
